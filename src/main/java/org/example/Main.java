@@ -10,9 +10,11 @@ public class Main {
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
             System.out.println("server listening on port: " + PORT);
-            while (true) {
+            while (!serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
-                new ChatClient(socket).start();
+//                new ChatClient(socket).start();
+                ChatHandler chatHandler = new ChatHandler(socket);
+                new Thread(chatHandler).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
